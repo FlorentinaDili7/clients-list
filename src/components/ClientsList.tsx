@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 interface User {
   id: number;
@@ -14,8 +14,8 @@ const UserList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [posts, setPosts] = useState<any[]>([]);
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const usersPerPage = 10;
@@ -25,15 +25,17 @@ const UserList: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://dummyjson.com/users?page=${currentPage}`);
+        const response = await fetch(
+          `https://dummyjson.com/users?page=${currentPage}`
+        );
         const data = await response.json();
-        console.log('API Response:', data);
+        console.log("API Response:", data);
         setUsers(data.users);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
         setLoading(false);
-        setError('Error fetching data. Please try again.');
+        setError("Error fetching data. Please try again.");
       }
     };
 
@@ -52,12 +54,12 @@ const UserList: React.FC = () => {
     // Sort the filtered users
     const sortedUsers = [...filtered].sort((a, b) => {
       const compareResult =
-        sortOrder === 'asc'
+        sortOrder === "asc"
           ? a.firstName.localeCompare(b.firstName)
           : b.firstName.localeCompare(a.firstName);
 
       if (compareResult === 0) {
-        return sortOrder === 'asc'
+        return sortOrder === "asc"
           ? a.lastName.localeCompare(b.lastName)
           : b.lastName.localeCompare(a.lastName);
       }
@@ -73,11 +75,12 @@ const UserList: React.FC = () => {
   };
 
   const handleSortChange = () => {
-    setSortOrder((prevSortOrder) => (prevSortOrder === 'asc' ? 'desc' : 'asc'));
+    setSortOrder((prevSortOrder) => (prevSortOrder === "asc" ? "desc" : "asc"));
   };
 
   const handleNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+    const totalPages = Math.ceil(users.length / usersPerPage);
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
   };
 
   const handlePrevPage = () => {
@@ -88,66 +91,68 @@ const UserList: React.FC = () => {
     const fetchUserPosts = async () => {
       if (selectedUserId !== null) {
         try {
-          const response = await fetch(`https://dummyjson.com/posts?userId=${selectedUserId}`);
+          const response = await fetch(
+            `https://dummyjson.com/posts?userId=${selectedUserId}`
+          );
           const data = await response.json();
-  
+
           // Update this line to access data.posts instead of data directly
           setPosts(data.posts);
-  
         } catch (error) {
-          console.error('Error fetching user posts:', error);
-          setError('Error fetching user posts. Please try again.');
+          console.error("Error fetching user posts:", error);
+          setError("Error fetching user posts. Please try again.");
         }
       }
     };
-  
+
     fetchUserPosts();
   }, [selectedUserId]);
-  
 
   return (
-    <div className='text-gray-900 p-8 vh-screen'>
-      <h1 className='text-4xl font-bold mb-6 text-gray-800'>User List</h1>
+    <div className="text-gray-900 p-8 vh-screen">
+      <h1 className="text-4xl font-bold mb-6 text-gray-800">User List</h1>
       {loading ? (
-        <p className='text-gray-600'>Loading...</p>
+        <p className="text-gray-600">Loading...</p>
       ) : error ? (
-        <p className='text-red-500'>{error}</p>
+        <p className="text-red-500">{error}</p>
       ) : (
         <div>
-          <div className='mb-4 flex items-center'>
-            <label className='text-sm font-medium text-gray-700 mr-2'>Filter:</label>
+          <div className="mb-4 flex items-center">
+            <label className="text-sm font-medium text-gray-700 mr-2">
+              Filter:
+            </label>
             <input
-              type='text'
+              type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className='border p-2 rounded-md mr-4'
-              placeholder='Search by name or email'
+              className="border p-2 rounded-md mr-4"
+              placeholder="Search by name or email"
             />
             <button
-              className='bg-gray-700 text-white px-4 py-2 rounded-full focus:outline-none'
+              className="bg-gray-700 text-white px-4 py-2 rounded-full focus:outline-none"
               onClick={handleSortChange}
             >
-              Sort {sortOrder === 'asc' ? 'Ascending' : 'Descending'}
+              Sort {sortOrder === "asc" ? "Ascending" : "Descending"}
             </button>
           </div>
-          <table className='min-w-full bg-white rounded shadow-md'>
+          <table className="min-w-full bg-white rounded shadow-md">
             <thead>
               <tr>
-                <th className='py-2 px-4 border-b text-gray-700'>First Name</th>
-                <th className='py-2 px-4 border-b text-gray-700'>Last Name</th>
-                <th className='py-2 px-4 border-b text-gray-700'>Email</th>
-                <th className='py-2 px-4 border-b text-gray-700'>Actions</th>
+                <th className="py-2 px-4 border-b text-gray-700">First Name</th>
+                <th className="py-2 px-4 border-b text-gray-700">Last Name</th>
+                <th className="py-2 px-4 border-b text-gray-700">Email</th>
+                <th className="py-2 px-4 border-b text-gray-700">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filteredUsers.map((user) => (
-                <tr key={user.id} className='hover:bg-gray-200'>
-                  <td className='py-2 px-4 border-b'>{user.firstName}</td>
-                  <td className='py-2 px-4 border-b'>{user.lastName}</td>
-                  <td className='py-2 px-4 border-b'>{user.email}</td>
-                  <td className='py-2 px-4 border-b'>
+                <tr key={user.id} className="hover:bg-gray-200">
+                  <td className="py-2 px-4 border-b">{user.firstName}</td>
+                  <td className="py-2 px-4 border-b">{user.lastName}</td>
+                  <td className="py-2 px-4 border-b">{user.email}</td>
+                  <td className="py-2 px-4 border-b">
                     <button
-                      className='bg-green-500 text-white px-4 py-2 rounded-full mr-2 focus:outline-none'
+                      className="bg-green-500 text-white px-4 py-2 rounded-full mr-2 focus:outline-none"
                       onClick={() => handleUserClick(user.id)}
                     >
                       Fetch Posts
@@ -157,33 +162,42 @@ const UserList: React.FC = () => {
               ))}
             </tbody>
           </table>
-          <div className='mt-4 flex flex-row items-center space-between'>
+          <div className="mt-4 flex flex-row items-center space-between">
             <button
-              className='bg-gray-700 text-white px-4 py-2 rounded-full focus:outline-none'
+              className={`bg-gray-700 text-white px-4 py-2 rounded-full focus:outline-none ${
+                currentPage === 1 ? "cursor-not-allowed" : ""
+              }`}
               onClick={handlePrevPage}
               disabled={currentPage === 1}
             >
               {"<<"}
             </button>
-            <span className='text-xl font-semibold bg-gray-700 text-white px-4 py-2 rounded-full mx-2'>
+            <span className="text-xl font-semibold bg-gray-700 text-white px-4 py-2 rounded-full mx-2">
               {currentPage}
             </span>
             <button
-              className='bg-gray-700 text-white px-4 py-2 rounded-full focus:outline-none'
+              className={`bg-gray-700 text-white px-4 py-2 rounded-full focus:outline-none ${
+                currentPage === Math.ceil(users.length / usersPerPage)
+                  ? "cursor-not-allowed"
+                  : ""
+              }`}
               onClick={handleNextPage}
+              disabled={currentPage === Math.ceil(users.length / usersPerPage)}
             >
               {">>"}
             </button>
           </div>
+
           {selectedUserId && (
-            <div className='mt-4'>
-              <h2 className='text-2xl font-semibold mb-2 text-gray-800'>
-                Posts by {users.find((user) => user.id === selectedUserId)?.firstName}
+            <div className="mt-4">
+              <h2 className="text-2xl font-semibold mb-2 text-gray-800">
+                Posts by{" "}
+                {users.find((user) => user.id === selectedUserId)?.firstName}
               </h2>
               <ul>
                 {Array.isArray(posts) &&
                   posts.map((post) => (
-                    <li key={post.id} className='mb-1 text-gray-600'>
+                    <li key={post.id} className="mb-1 text-gray-600">
                       {post.title}
                     </li>
                   ))}
