@@ -43,7 +43,7 @@ const UserList: React.FC = () => {
   }, [currentPage]);
 
   useEffect(() => {
-    // Filter users based on search term
+   
     const filtered = users.filter(
       (user) =>
         user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -51,7 +51,6 @@ const UserList: React.FC = () => {
         user.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    // Sort the filtered users
     const sortedUsers = [...filtered].sort((a, b) => {
       const compareResult =
         sortOrder === "asc"
@@ -96,7 +95,6 @@ const UserList: React.FC = () => {
           );
           const data = await response.json();
 
-          // Update this line to access data.posts instead of data directly
           setPosts(data.posts);
         } catch (error) {
           console.error("Error fetching user posts:", error);
