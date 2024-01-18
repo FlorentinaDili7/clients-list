@@ -147,10 +147,10 @@ const UserList: React.FC = () => {
             <tbody>
               {filteredUsers.map((user) => (
                 <tr key={user.id} className="hover:bg-gray-200">
-                  <td className="py-2 px-4 border-b">{user.firstName}</td>
-                  <td className="py-2 px-4 border-b">{user.lastName}</td>
-                  <td className="py-2 px-4 border-b">{user.email}</td>
-                  <td className="py-2 px-4 border-b">
+                  <td className="py-2 px-4 border-b border-r">{user.firstName}</td>
+                  <td className="py-2 px-4 border-b border-r">{user.lastName}</td>
+                  <td className="py-2 px-4 border-b border-r">{user.email}</td>
+                  <td className="py-2 px-4 border-b border-r">
                     <button
                       className="bg-green-500 text-white px-4 py-2 rounded-full mr-2 focus:outline-none"
                       onClick={() => handleUserClick(user.id)}
