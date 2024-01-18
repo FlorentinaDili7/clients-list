@@ -84,6 +84,27 @@ const UserList: React.FC = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
+  useEffect(() => {
+    const fetchUserPosts = async () => {
+      if (selectedUserId !== null) {
+        try {
+          const response = await fetch(`https://dummyjson.com/posts?userId=${selectedUserId}`);
+          const data = await response.json();
+  
+          // Update this line to access data.posts instead of data directly
+          setPosts(data.posts);
+  
+        } catch (error) {
+          console.error('Error fetching user posts:', error);
+          setError('Error fetching user posts. Please try again.');
+        }
+      }
+    };
+  
+    fetchUserPosts();
+  }, [selectedUserId]);
+  
+
   return (
     <div className='text-gray-900 p-8 vh-screen'>
       <h1 className='text-4xl font-bold mb-6 text-gray-800'>User List</h1>
