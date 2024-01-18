@@ -189,21 +189,41 @@ const UserList: React.FC = () => {
           </div>
 
           {selectedUserId && (
-            <div className="mt-4">
-              <h2 className="text-2xl font-semibold mb-2 text-gray-800">
-                Posts by{" "}
-                {users.find((user) => user.id === selectedUserId)?.firstName}
-              </h2>
-              <ul>
-                {Array.isArray(posts) &&
-                  posts.map((post) => (
-                    <li key={post.id} className="mb-1 text-gray-600">
-                      {post.title}
-                    </li>
-                  ))}
-              </ul>
+          <div className="mt-4">
+            <h2 className="text-2xl font-semibold mb-2 text-gray-800">
+              Posts by{" "}
+              {users.find((user) => user.id === selectedUserId)?.firstName}
+            </h2>
+            <div>
+              {Array.isArray(posts) &&
+                posts.map((post) => (
+                  <div key={post.id} className="bg-gray-100 p-4 mb-2 rounded-md">
+                    <h3 className="text-lg font-semibold mb-1">{post.title}</h3>
+                    <p className="text-gray-700">{post.body}</p>
+                    <div className="flex items-center justify-between mt-2">
+                      <div className="flex items-center">
+                        <span className="text-gray-600 mr-2">Tags:</span>
+                        {post.tags.map((tag:any , index: any) => (
+                          <span
+                            key={index}
+                            className="bg-gray-300 text-gray-700 px-2 py-1 rounded-full text-xs mr-2"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-gray-600 mr-2">Reactions:</span>
+                        <span className="bg-yellow-400 text-gray-800 px-2 py-1 rounded-full text-xs mr-2">
+                          {post.reactions}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
             </div>
-          )}
+          </div>
+        )}
         </div>
       )}
     </div>
